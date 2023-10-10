@@ -1,0 +1,60 @@
+1.  Subversion export all to new company folder name, e.g.
+    'C:\Templates\XYZCompany', change folder names and check in.
+2.  In the main template folder open Licence.txt, change licensed name to new
+    licensed name, save
+3.  Create new company folder name in templates folder, 
+    e.g. 'C:\Program Files\Microsoft Office\Templates\XYZ_Company'
+4.  Copy 'CopyrightNotice.txt' and 'Licence.txt' to templates (install???) folder
+5.  For each '*.dotm', in 'C:\Templates\XYZCompany'
+    5.1  Right click open, 
+    5.2  With macros, 
+            Change internal template name to new template name 
+              i.e. in moduleGlobalDefinitions, Const companyName As String = "XYZ_Company"
+            Change internal licensed name to new licensed name
+              i.e. in moduleGlobalDefinitions, Const licensedName As String = "XYZ_Company (registration no)"
+            Change project name - apply new company name
+            Note: Do not change     
+                  InsertDemoWatermark companyName:="MyCompany", myParameter:=DOC_BASE_CONTROL
+    5.4  Save to new template name (EnsureLocalTemplateReadOnly will give error msg until template 
+         copied to target folder)
+    5.5  With BaseTemplate.dotm, execute 'DeleteDocumentVariables' in moduleRibbon for each new 
+         template (otherwise not able to edit, will be closed automatically due to event callback 
+         having wrong template info in document variables)
+    5.6  With each new template, change default settings:
+            in 'AssignGlobals'
+                dateFormatString, ribbonName
+            in 'PageDefaultSettings'
+                'Default page settings - cm (A4)
+                'Default page settings - cm (Letter)
+                'Default page settings - this doc
+            in 'Document_New()'
+                Template specific custom document properties' overrides
+    5.7  Complete baselining info in 'AssignRevisionInfo'
+    5.7  Delete original '*.dotm'
+    5.8 With each new template, run 'UnlockActiveDocument', then 'DeleteDemoWatermark', then
+        'LockActiveTemplateDocument' in BaseTempate.dotm
+6.  In 'XYZCompany_Competency_db' folder, 
+    6.1  Change company name in 2 x database file names
+    6.2  With competency database, search and replace company name in macros
+7.  In 'XYZCompany_Template_db' folder, 
+    7.1  Change company name in 3 x database file names
+8.  Copy 5 x database files to new company templates install folder
+9.  Create new document with the main template, CTRL-A Delete, change company
+    logo in header, change company name in footer, save as 'BlankXYZCompanyDoc.docx', delete original blank doc
+10.  With main template
+    10.1  Change company logo (on front page, in header. etc.)
+    10.2  Change company name throughout document, also in footer
+11. For each '*.dotm', with CustomUIEditor, open the main template and change
+    the company name to be displayed on the ribbon, in both instances
+    (customUI14.xml, customui.xml)
+12. Open all *.bat files, replace company name with new company name
+13. Copy new *.dotm to templates folder, e.g. 'C:\Program Files\Microsoft Office\Templates\XYZ_Company', 
+    then create new document, save and exit.
+14. With VBASecurity
+    14.1 Export [HKEY_CURRENT_USER\Software\Microsoft\Office\XX.0\Common\General]
+         for new template, only keep value for "SharedTemplates" key
+    14.2 Create registration file for new template, e.g.
+         'Reg-Office-XYZCompany.reg'
+    14.3 Replace new company name throughout
+    14.4 Replace "SharedTemplates" key throughout with that for new company
+15. Ensure all items are checked into subversion
